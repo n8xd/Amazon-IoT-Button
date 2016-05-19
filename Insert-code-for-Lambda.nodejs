@@ -1,3 +1,6 @@
+        // put this code in the top of the exports.handler() in the button email demo
+        // if you've changed the lambda url structure in your Ask Home, you'll have to adjust it here.
+        
         var https = require( 'https' );
         var STappID = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';  // AppID from app oauth page or simulator
         var STtoken = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';  // token from app oauth page or simulator
