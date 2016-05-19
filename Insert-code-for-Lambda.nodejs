@@ -1,5 +1,8 @@
         // put this code in the top of the exports.handler() in the button email demo
         // if you've changed the lambda url structure in your Ask Home, you'll have to adjust it here.
+        // add /n/n${speechText} to the email message if you want the return message from Ask Home
+        //     Message: `${event.serialNumber} -- processed by Lambda\nBattery voltage: ${event.batteryVoltage}\n\n${speechText}`,
+        // its toward the bottom of exports.handler()
         
         var https = require( 'https' );
         var STappID = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';  // AppID from app oauth page or simulator
@@ -8,6 +11,7 @@
         var Noun = "dining room light";
         var Operand = "none";
         var Inquisitor = "none";
+        var speechText = 'The App on SmartThings did not return any message.'
 
         var url = 'https://graph.api.smartthings.com/api/smartapps/installations/' + STappID + '/' + 
                  Noun + '/' + Operator + '/'+ Operand + '/' + Inquisitor  +'?access_token=' + STtoken;
@@ -16,7 +20,6 @@
         https.get( url, function( response ) {
             response.on( 'data', function( data ) {
                 var resJSON = JSON.parse(data);
-                var speechText = 'The App on SmartThings did not return any message.'
                 if (resJSON.talk2me) { speechText = resJSON.talk2me; }
                 // removed output...we aren't talking using alexa, but the response text will be in the log
                 console.log(speechText);
