@@ -1,0 +1,21 @@
+        var https = require( 'https' );
+        var STappID = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';  // AppID from app oauth page or simulator
+        var STtoken = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';  // token from app oauth page or simulator
+        var Operator = "on";
+        var Noun = "dining room light";
+        var Operand = "none";
+        var Inquisitor = "none";
+
+        var url = 'https://graph.api.smartthings.com/api/smartapps/installations/' + STappID + '/' + 
+                 Noun + '/' + Operator + '/'+ Operand + '/' + Inquisitor  +'?access_token=' + STtoken;
+        url = url.replace("%","")        
+        console.log(url)
+        https.get( url, function( response ) {
+            response.on( 'data', function( data ) {
+                var resJSON = JSON.parse(data);
+                var speechText = 'The App on SmartThings did not return any message.'
+                if (resJSON.talk2me) { speechText = resJSON.talk2me; }
+                // removed output...we aren't talking using alexa, but the response text will be in the log
+                console.log(speechText);
+            } );
+        } );
