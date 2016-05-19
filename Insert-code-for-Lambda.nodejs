@@ -12,11 +12,11 @@
         var speechText = 'The App on SmartThings did not return any message.'
 
         var Operator = "none";   var Noun = "none";  var Operand = "none"; Inquisitor = "none";
-        if (event.clickType = "SHORT") {
+        if (event.clickType == "SHORT") {
             Operator = "status";   Noun = "front door";  Operand = "none"; Inquisitor = "none";
-        } else if (event.clickType = "DOUBLE") {
+        } else if (event.clickType == "DOUBLE") {
             Operator = "status";   Noun = "pool";        Operand = "none"; Inquisitor = "none";
-        } else if (event.clickType = "LONG") {
+        } else if (event.clickType == "LONG") {
             Operator = "status";   Noun = "kitchen air"; Operand = "none"; Inquisitor = "none";
         }
 
