@@ -9,12 +9,17 @@
         var https = require( 'https' );
         var STappID = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';  // AppID from app oauth page or simulator
         var STtoken = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';  // token from app oauth page or simulator
-        var Operator = "on";
-        var Noun = "dining room light";
-        var Operand = "none";
-        var Inquisitor = "none";
         var speechText = 'The App on SmartThings did not return any message.'
-
+        if (event.clickType = "SHORT") {
+            var Operator == "status";   var Noun = "front door";  var Operand = "none"; var Inquisitor = "none";
+        } else if (event.clickType = "DOUBLE") {
+            var Operator == "status";   var Noun = "pool";  var Operand = "none"; var Inquisitor = "none";
+        } else if (event.clickType = "LONG") {
+            var Operator == "status";   var Noun = "kitchen";  var Operand = "none"; var Inquisitor = "none";
+        } else {
+            var Operator == "none";   var Noun = "none";  var Operand = "none"; var Inquisitor = "none";
+        }
+        
         var url = 'https://graph.api.smartthings.com/api/smartapps/installations/' + STappID + '/' + 
                  Noun + '/' + Operator + '/'+ Operand + '/' + Inquisitor  +'?access_token=' + STtoken;
         url = url.replace("%","")        
