@@ -2,6 +2,7 @@
 // Apache 2.0 license free to use and distribute
 //
 // replace the export.handler with this routine.  You may have to adjust the URL if you changed it in your AskHome smartapp
+// 5/19/16 moved eveything around so that Lambda wasnt running off and sending the email before the https call came back
 
 
 exports.handler = (event, context, callback) => {
