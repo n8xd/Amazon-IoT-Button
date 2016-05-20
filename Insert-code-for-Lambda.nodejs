@@ -1,18 +1,12 @@
-        // put this code in the top of the exports.handler() in the button email demo
-        // if you've changed the lambda url structure in your Ask Home, you'll have to adjust it here.
-        // add /n/n${speechText} to the email message if you want the return message from Ask Home
-        //     var params = {
-        //         Message: `${event.serialNumber} -- processed by Lambda\nBattery voltage: ${event.batteryVoltage}\n\n${speechText}`,
-        // its toward the bottom of exports.handler()....and make sure you change the "const params" to "var params"
-        
-        //  BUG - sometimes you'll get the default "did not return any message" message.
-        //  the functions and actions perform ok, but the email gets sent out with the default message
-        //  before the HTTPS request from SmartThiings returns.   Lambda does a fire and forget on the smartthings call
-        //  and if it's back in time, it uses the information...if not it just sends out the email as is
+// replace the export.handler with this routine.  You may have to adjust the URL if you changed it in your AskHome smartapp
+
+
+exports.handler = (event, context, callback) => {
+        console.log('Received event:', event.clickType);
         
         var https = require( 'https' );
-        var STappID = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';  // AppID from app oauth page or simulator
-        var STtoken = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';  // token from app oauth page or simulator
+        var STappID = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';  // AppID from Apps Editor
+        var STtoken = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';  // token from app oauth page
         var speechText = 'The App on SmartThings did not return any message.'
 
         var Operator = "none";   var Noun = "none";  var Operand = "none"; Inquisitor = "none";
@@ -23,7 +17,6 @@
         } else if (event.clickType == "LONG") {
             Operator = "status";   Noun = "kitchen air"; Operand = "none"; Inquisitor = "none";
         }
-
         
         var url = 'https://graph.api.smartthings.com/api/smartapps/installations/' + STappID + '/' + 
                  Noun + '/' + Operator + '/'+ Operand + '/' + Inquisitor  +'?access_token=' + STtoken;
@@ -33,7 +26,27 @@
             response.on( 'data', function( data ) {
                 var resJSON = JSON.parse(data);
                 if (resJSON.talk2me) { speechText = resJSON.talk2me; }
-                // removed output...we aren't talking using alexa, but the response text will be in the log
                 console.log(speechText);
             } );
+        
+            // create/get topic
+           createTopic('aws-iot-button-sns-topic', (err, topicArn) => {
+           if (err) {
+               callback(err);
+              return;
+              }
+           console.log(`Publishing to topic ${topicArn}`);
+          // publish message
+          var params = {
+              Message: `${event.serialNumber} -- processed by Lambda\nBattery voltage: ${event.batteryVoltage}\n\n${speechText}`,
+              Subject: `Hello from your IoT Button ${event.serialNumber}: ${event.clickType}`,
+               TopicArn: topicArn
+           };
+           // result will go to function callback
+           SNS.publish(params, callback);
+           });    
+             
+            
         } );
+
+};
