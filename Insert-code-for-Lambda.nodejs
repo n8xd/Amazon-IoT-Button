@@ -3,8 +3,12 @@
         // add /n/n${speechText} to the email message if you want the return message from Ask Home
         //     var params = {
         //         Message: `${event.serialNumber} -- processed by Lambda\nBattery voltage: ${event.batteryVoltage}\n\n${speechText}`,
-        // its toward the bottom of exports.handler()....and make sure you change the "const params" to "var params" or
-        // you'll get the default "did not return any message" message.
+        // its toward the bottom of exports.handler()....and make sure you change the "const params" to "var params"
+        
+        //  BUG - sometimes you'll get the default "did not return any message" message.
+        //  the functions and actions perform ok, but the email gets sent out with the default message
+        //  before the HTTPS request from SmartThiings returns.   Lambda does a fire and forget on the smartthings call
+        //  and if it's back in time, it uses the information...if not it just sends out the email as is
         
         var https = require( 'https' );
         var STappID = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';  // AppID from app oauth page or simulator
