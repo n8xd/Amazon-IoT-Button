@@ -12,7 +12,7 @@
         var speechText = 'The App on SmartThings did not return any message.'
 
         var Operator = "none";   var Noun = "none";  var Operand = "none"; Inquisitor = "none";
-        if (event.clickType == "SHORT") {
+        if (event.clickType == "SINGLE") {
             Operator = "status";   Noun = "front door";  Operand = "none"; Inquisitor = "none";
         } else if (event.clickType == "DOUBLE") {
             Operator = "status";   Noun = "pool";        Operand = "none"; Inquisitor = "none";
